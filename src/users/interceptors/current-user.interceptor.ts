@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { UsersService } from '../users.service';
-import { RequestWithUser } from '../request-with-user.interface';
+import { RequestWithUser } from '../../interfaces/request-with-user.interface';
 
 @Injectable()
 export class CurrentUserInterceptor implements NestInterceptor {
