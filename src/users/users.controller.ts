@@ -9,7 +9,6 @@ import {
   Query,
   NotFoundException,
   Session,
-  UseInterceptors,
 } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
@@ -18,7 +17,6 @@ import { Serialize } from '../interceptors/serialize.interceptor';
 import { UserDto } from './dtos/user.dto';
 import { AuthService } from './auth.service';
 import { CurrentUser } from './decorators/current-user.decorator';
-import { CurrentUserInterceptor } from './interceptors/current-user.interceptor';
 import { User } from './user.entity';
 
 interface UserSession {
@@ -28,30 +26,11 @@ interface UserSession {
 
 @Controller('auth')
 @Serialize(UserDto)
-@UseInterceptors(CurrentUserInterceptor)
 export class UsersController {
   constructor(
     private usersService: UsersService,
     private authService: AuthService,
   ) {}
-
-  // @Get('/colors/:color')
-  // setColor(@Param('color') color: string, @Session() session: UserSession) {
-  //   session.color = color;
-  // }
-
-  // @Get('/colors')
-  // getColor(@Session() session: UserSession) {
-  //   return session.color;
-  // }
-
-  // @Get('/whoami')
-  // whoAmI(@Session() session: UserSession) {
-  //   if (!session.userId) {
-  //     throw new NotFoundException('user not found');
-  //   }
-  //   return this.usersService.findOne(session.userId);
-  // }
 
   @Get('/whoami')
   whoAmI(@CurrentUser() user: User) {
@@ -109,4 +88,22 @@ export class UsersController {
   updateUser(@Param('id') id: string, @Body() body: UpdateUserDto) {
     return this.usersService.update(parseInt(id), body);
   }
+
+  // @Get('/colors/:color')
+  // setColor(@Param('color') color: string, @Session() session: UserSession) {
+  //   session.color = color;
+  // }
+
+  // @Get('/colors')
+  // getColor(@Session() session: UserSession) {
+  //   return session.color;
+  // }
+
+  // @Get('/whoami')
+  // whoAmI(@Session() session: UserSession) {
+  //   if (!session.userId) {
+  //     throw new NotFoundException('user not found');
+  //   }
+  //   return this.usersService.findOne(session.userId);
+  // }
 }
