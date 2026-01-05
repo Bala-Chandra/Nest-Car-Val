@@ -16,6 +16,7 @@ import { UsersService } from './users.service';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { UserDto } from './dtos/user.dto';
 import { AuthService } from './auth.service';
+import { CurrentUser } from './decorators/current-user.decorator';
 
 interface UserSession {
   userId?: number;
@@ -40,12 +41,20 @@ export class UsersController {
   //   return session.color;
   // }
 
+  // @Get('/whoami')
+  // whoAmI(@Session() session: UserSession) {
+  //   if (!session.userId) {
+  //     throw new NotFoundException('user not found');
+  //   }
+  //   return this.usersService.findOne(session.userId);
+  // }
+
   @Get('/whoami')
-  whoAmI(@Session() session: UserSession) {
-    if (!session.userId) {
+  whoAmI(@CurrentUser() user: UserDto) {
+    if (!user) {
       throw new NotFoundException('user not found');
     }
-    return this.usersService.findOne(session.userId);
+    return user;
   }
 
   @Post('/signout')
