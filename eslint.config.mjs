@@ -24,6 +24,16 @@ export default tseslint.config(
       },
     },
   },
+  // 🔽 OVERRIDES (THIS IS THE KEY PART)
+  {
+    files: ['**/*.dto.ts', '**/*.entity.ts'],
+    rules: {
+      '@typescript-eslint/no-unsafe-call': 'off',
+      '@typescript-eslint/no-unsafe-return': 'off',
+    },
+  },
+
+  // General rules
   {
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
